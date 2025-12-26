@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Manpreet 💙 | Birthday Surprise</title>
+  <meta name="description" content="Cute birthday countdown + letter for Manpreet." />
+
+  <style>
+    :root{
+      --bg1:#061226;
+      --bg2:#081a35;
+
+      /* Cute “Doraemon vibe” palette (inspired, no characters) */
+      --blue:#35b6ff;
+      --deepBlue:#1f86ff;
+      --red:#ff3b4f;
+      --yellow:#ffd45a;
+      --pink:#ff6bd6;
+      --mint:#4fffd6;
+
+      --glass: rgba(255,255,255,.10);
+      --stroke: rgba(255,255,255,.18);
+      --text: rgba(255,255,255,.94);
+      --muted: rgba(255,255,255,.76);
+
+      --shadow: 0 28px 90px rgba(0,0,0,.55);
+      --radius: 24px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      color:var(--text);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      background:
+        radial-gradient(1200px 700px at 18% 12%, rgba(53,182,255,.20), transparent 58%),
+        radial-gradient(900px 650px at 82% 18%, rgba(255,59,79,.14), transparent 58%),
+        radial-gradient(900px 650px at 55% 95%, rgba(255,212,90,.14), transparent 60%),
+        linear-gradient(180deg, var(--bg1), var(--bg2));
+      overflow-x:hidden;
+    }
+
+    /* Confetti layer */
+    #confetti{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:60;
+    }
+
+    /* Sparkle trail layer */
+    #sparkles{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:55;
+    }
+
+    /* Floating bubbles */
+    .bubble{
+      position:fixed;
+      border-radius:50%;
+      opacity:.36;
+      pointer-events:none;
+      mix-blend-mode: screen;
+      animation: floaty 10s ease-in-out infinite;
+      z-index:0;
+      filter: blur(.2px);
+    }
+    @keyframes floaty{
+      0%,100%{transform: translateY(0px) translateX(0px) rotate(0deg)}
+      50%{transform: translateY(-22px) translateX(8px) rotate(6deg)}
+    }
+
+    /* Cute gadget stickers (simple icon drawings) */
+    .sticker{
+      position:fixed;
+      z-index:0;
+      pointer-events:none;
+      opacity:.45;
+      animation: stickerFloat 8s ease-in-out infinite;
+      filter: drop-shadow(0 18px 28px rgba(0,0,0,.25));
+    }
+    @keyframes stickerFloat{
+      0%,100%{transform: translateY(0px) rotate(-2deg)}
+      50%{transform: translateY(-18px) rotate(3deg)}
+    }
+
+    .wrap{
+      position:relative;
+      z-index:1;
+      min-height:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:28px 14px;
+    }
+
+    .layout{
+      width:min(980px, 100%);
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap:16px;
+    }
+    @media (max-width: 860px){
+      .layout{grid-template-columns:1fr}
+    }
+
+    .card{
+      background:var(--glass);
+      border:1px solid var(--stroke);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .shine{
+      position:absolute;
+      inset:-2px;
+      background: linear-gradient(120deg,
+        transparent 0%,
+        rgba(255,255,255,.08) 42%,
+        rgba(255,255,255,.20) 50%,
+        rgba(255,255,255,.08) 58%,
+        transparent 100%);
+      transform: translateX(-120%);
+      animation: shine 7s ease-in-out infinite;
+      pointer-events:none;
+    }
+    @keyframes shine{
+      0%, 35%{transform: translateX(-120%)}
+      60%{transform: translateX(120%)}
+      100%{transform: translateX(120%)}
+    }
+
+    .main{ padding:24px 22px 22px; }
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      border:1px solid rgba(255,255,255,.18);
+      background: rgba(0,0,0,.18);
+      padding:8px 12px;
+      border-radius:999px;
+      font-size:12px;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      color: rgba(255,255,255,.82);
+    }
+    .dot{
+      width:10px;height:10px;border-radius:50%;
+      background: radial-gradient(circle at 30% 30%, #fff, var(--blue));
+      box-shadow:0 0 22px rgba(53,182,255,.55);
+      animation: dotPulse 1.8s ease-in-out infinite;
+    }
+    @keyframes dotPulse{
+      0%,100%{transform: scale(1)}
+      50%{transform: scale(1.18)}
+    }
+
+    h1{
+      margin:14px 0 8px;
+      font-size: clamp(30px, 4.4vw, 56px);
+      line-height:1.05;
+      letter-spacing:-.02em;
+    }
+    .grad{
+      background: linear-gradient(90deg, var(--blue), var(--yellow), var(--red));
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+      filter: drop-shadow(0 12px 28px rgba(53,182,255,.12));
+    }
+
+    .sub{
+      margin:0;
+      color:var(--muted);
+      line-height:1.6;
+      max-width:70ch;
+    }
+
+    .countdown{
+      margin-top:16px;
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap:12px;
+    }
+    @media (max-width: 420px){
+      .countdown{grid-template-columns: repeat(2, 1fr)}
+    }
+    .box{
+      border-radius:18px;
+      background: rgba(0,0,0,.18);
+      border:1px solid rgba(255,255,255,.14);
+      padding:14px 12px;
+      position:relative;
+      overflow:hidden;
+      animation: popIn .55s ease both;
+    }
+    .box:nth-child(2){animation-delay:.06s}
+    .box:nth-child(3){animation-delay:.12s}
+    .box:nth-child(4){animation-delay:.18s}
+    @keyframes popIn{
+      from{transform: translateY(8px); opacity:0}
+      to{transform: translateY(0); opacity:1}
+    }
+    .box::after{
+      content:"";
+      position:absolute;
+      inset:-60px;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(53,182,255,.18), transparent 55%),
+        radial-gradient(circle at 85% 70%, rgba(255,59,79,.14), transparent 55%),
+        radial-gradient(circle at 45% 90%, rgba(255,212,90,.14), transparent 60%);
+      transform: rotate(12deg);
+      pointer-events:none;
+    }
+    .num{
+      position:relative;
+      z-index:1;
+      font-size: clamp(26px, 3.2vw, 44px);
+      font-weight: 900;
+      letter-spacing:-.03em;
+      margin:0;
+    }
+    .lbl{
+      position:relative;
+      z-index:1;
+      margin:6px 0 0;
+      font-size:12px;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      color: rgba(255,255,255,.72);
+    }
+
+    .row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+      margin-top:14px;
+    }
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.18);
+      color: rgba(255,255,255,.86);
+      font-size:13px;
+    }
+    .btn{
+      cursor:pointer;
+      user-select:none;
+      transition: transform .18s ease, border-color .18s ease;
+    }
+    .btn:hover{transform: translateY(-1px); border-color: rgba(255,255,255,.30)}
+    .btn:active{transform: translateY(0px) scale(.99)}
+
+    /* Side panel */
+    .side{
+      padding:20px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    .side h2{
+      margin:0;
+      font-size:18px;
+      letter-spacing:-.01em;
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .side p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.55;
+      font-size:14px;
+    }
+
+    /* Gadget grid */
+    .gadgets{
+      display:grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap:10px;
+      margin-top:6px;
+    }
+    .gadget{
+      border-radius:18px;
+      background: rgba(0,0,0,.16);
+      border:1px solid rgba(255,255,255,.14);
+      padding:12px 12px;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      transition: transform .2s ease, border-color .2s ease;
+      position:relative;
+      overflow:hidden;
+    }
+    .gadget::after{
+      content:"";
+      position:absolute;
+      inset:-40px;
+      background: radial-gradient(circle at 20% 20%, rgba(255,255,255,.12), transparent 55%);
+      transform: rotate(10deg);
+      opacity:.6;
+      pointer-events:none;
+    }
+    .gadget:hover{transform: translateY(-2px); border-color: rgba(255,255,255,.30)}
+    .gicon{
+      width:42px;height:42px;border-radius:16px;
+      display:grid;place-items:center;
+      background: linear-gradient(135deg, rgba(53,182,255,.35), rgba(255,212,90,.22));
+      border:1px solid rgba(255,255,255,.16);
+      font-size:20px;
+      position:relative;
+      z-index:1;
+    }
+    .gtext{display:flex;flex-direction:column;gap:2px;min-width:0; position:relative; z-index:1}
+    .gtext .t{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .gtext .d{font-size:12px;color:var(--muted)}
+
+    /* Envelope */
+    .envWrap{display:flex;justify-content:center; padding:10px 0 0}
+    .envelope{
+      width:min(340px, 92%);
+      aspect-ratio: 16/11;
+      position:relative;
+      border-radius:20px;
+      background: rgba(0,0,0,.22);
+      border:1px solid rgba(255,255,255,.16);
+      box-shadow: 0 26px 60px rgba(0,0,0,.45);
+      cursor:pointer;
+      overflow:hidden;
+      transform: translateZ(0);
+      transition: transform .18s ease;
+    }
+    .envelope:hover{transform: translateY(-2px)}
+    .envelope::before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background:
+        radial-gradient(circle at 18% 18%, rgba(53,182,255,.22), transparent 58%),
+        radial-gradient(circle at 82% 25%, rgba(255,59,79,.14), transparent 60%),
+        radial-gradient(circle at 55% 90%, rgba(255,212,90,.14), transparent 64%);
+      pointer-events:none;
+    }
+    .envTop{
+      position:absolute;
+      inset:0;
+      clip-path: polygon(0 0, 100% 0, 50% 55%);
+      background: linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,.04));
+      transform-origin: top;
+      transition: transform .75s cubic-bezier(.2,.9,.2,1);
+      border-bottom: 1px solid rgba(255,255,255,.12);
+    }
+    .envBody{
+      position:absolute;
+      inset:0;
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(0,0,0,.18));
+    }
+    .envLeft{
+      position:absolute;
+      inset:0;
+      clip-path: polygon(0 0, 52% 58%, 0 100%);
+      background: rgba(255,255,255,.06);
+      border-right: 1px solid rgba(255,255,255,.08);
+    }
+    .envRight{
+      position:absolute;
+      inset:0;
+      clip-path: polygon(100% 0, 48% 58%, 100% 100%);
+      background: rgba(255,255,255,.05);
+      border-left: 1px solid rgba(255,255,255,.08);
+    }
+    .seal{
+      position:absolute;
+      left:50%;
+      top:56%;
+      transform: translate(-50%,-50%);
+      width:64px;height:64px;border-radius:50%;
+      background:
+        radial-gradient(circle at 30% 30%, rgba(255,255,255,.92), rgba(255,255,255,.15)),
+        linear-gradient(135deg, var(--yellow), var(--red));
+      border:1px solid rgba(255,255,255,.22);
+      box-shadow: 0 12px 30px rgba(255,59,79,.16), 0 0 24px rgba(255,212,90,.16);
+      display:grid; place-items:center;
+      font-weight:900;
+      color:#0b1325;
+      letter-spacing:.04em;
+    }
+    .envelope.open .envTop{transform: rotateX(160deg);}
+
+    .hint{
+      text-align:center;
+      color: rgba(255,255,255,.78);
+      font-size:12px;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      margin-top:8px;
+    }
+
+    /* Modal letter */
+    .modal{
+      position:fixed;
+      inset:0;
+      display:none;
+      place-items:center;
+      padding:18px;
+      z-index:50;
+      background: rgba(0,0,0,.60);
+      backdrop-filter: blur(10px);
+    }
+    .modal.open{display:grid}
+
+    .letter{
+      width:min(820px, 100%);
+      border-radius: 26px;
+      background: rgba(255,255,255,.11);
+      border:1px solid rgba(255,255,255,.20);
+      box-shadow: 0 35px 90px rgba(0,0,0,.60);
+      overflow:hidden;
+      position:relative;
+      animation: modalIn .25s ease both;
+    }
+    @keyframes modalIn{
+      from{transform: translateY(10px); opacity:0}
+      to{transform: translateY(0); opacity:1}
+    }
+
+    .letter::before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background:
+        radial-gradient(circle at 15% 20%, rgba(53,182,255,.20), transparent 58%),
+        radial-gradient(circle at 85% 25%, rgba(255,59,79,.14), transparent 58%),
+        radial-gradient(circle at 55% 95%, rgba(255,212,90,.14), transparent 62%);
+      pointer-events:none;
+    }
+    .letterHead{
+      position:relative;
+      z-index:1;
+      padding:16px 18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      border-bottom: 1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.18);
+    }
+    .letterHead strong{
+      font-size:13px;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      color: rgba(255,255,255,.90);
+    }
+    .close{
+      border:1px solid rgba(255,255,255,.18);
+      background: rgba(0,0,0,.18);
+      color: rgba(255,255,255,.88);
+      border-radius:999px;
+      padding:10px 12px;
+      cursor:pointer;
+      transition: transform .16s ease, border-color .16s ease;
+    }
+    .close:hover{transform: translateY(-1px); border-color: rgba(255,255,255,.30)}
+    .close:active{transform: translateY(0px)}
+
+    .letterBody{
+      position:relative;
+      z-index:1;
+      padding: 18px 18px 20px;
+      display:grid;
+      gap:12px;
+    }
+    .letterTitle{
+      margin:0;
+      font-size: clamp(18px, 2.1vw, 26px);
+      letter-spacing:-.01em;
+    }
+
+    /* Scrollable paper */
+    .paper{
+      border-radius:18px;
+      background: rgba(0,0,0,.18);
+      border:1px solid rgba(255,255,255,.14);
+      padding:16px 14px;
+      line-height:1.75;
+      font-size:15px;
+      white-space:pre-wrap;
+      max-height: min(56vh, 520px);
+      overflow:auto;
+      overscroll-behavior: contain;
+      -webkit-overflow-scrolling: touch;
+    }
+    .paper::-webkit-scrollbar{width:10px}
+    .paper::-webkit-scrollbar-thumb{
+      background: linear-gradient(180deg, rgba(53,182,255,.55), rgba(255,59,79,.42));
+      border-radius:999px;
+      border:2px solid rgba(0,0,0,.22);
+    }
+    .paper::-webkit-scrollbar-track{background: rgba(0,0,0,.12); border-radius:999px}
+
+    .footer{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+      justify-content:space-between;
+      color: rgba(255,255,255,.68);
+      font-size:12px;
+      padding-top:2px;
+    }
+
+    /* Tiny “tap to sparkle” helper */
+    .tinyHint{
+      margin-top:10px;
+      color: rgba(255,255,255,.68);
+      font-size:12px;
+      letter-spacing:.08em;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Background bubbles -->
+  <div class="bubble" style="width:170px;height:170px;left:-50px;top:70px;background:rgba(53,182,255,.22)"></div>
+  <div class="bubble" style="width:240px;height:240px;right:-80px;top:110px;background:rgba(255,59,79,.16);animation-delay:-2s"></div>
+  <div class="bubble" style="width:200px;height:200px;left:12%;bottom:-80px;background:rgba(255,212,90,.16);animation-delay:-4s"></div>
+
+  <!-- Cute gadget stickers -->
+  <svg class="sticker" style="left:3%; top:22%; width:92px; height:92px; animation-delay:-1s" viewBox="0 0 100 100" aria-hidden="true">
+    <rect x="22" y="14" width="56" height="74" rx="10" fill="rgba(255,107,214,.22)" stroke="rgba(255,255,255,.30)" />
+    <rect x="30" y="22" width="40" height="58" rx="8" fill="rgba(0,0,0,.10)" stroke="rgba(255,255,255,.22)" />
+    <circle cx="64" cy="52" r="3.2" fill="rgba(255,212,90,.65)"/>
+  </svg>
+
+  <svg class="sticker" style="right:4%; top:28%; width:110px; height:110px; animation-delay:-3s" viewBox="0 0 120 120" aria-hidden="true">
+    <ellipse cx="60" cy="65" rx="40" ry="26" fill="rgba(53,182,255,.20)" stroke="rgba(255,255,255,.28)"/>
+    <ellipse cx="60" cy="60" rx="30" ry="18" fill="rgba(255,255,255,.08)" stroke="rgba(255,255,255,.18)"/>
+    <circle cx="45" cy="60" r="3" fill="rgba(255,212,90,.70)"/>
+    <circle cx="60" cy="60" r="3" fill="rgba(255,59,79,.60)"/>
+    <circle cx="75" cy="60" r="3" fill="rgba(79,255,214,.55)"/>
+  </svg>
+
+  <svg class="sticker" style="left:10%; bottom:10%; width:90px; height:90px; animation-delay:-2s" viewBox="0 0 100 100" aria-hidden="true">
+    <path d="M30 60c0-16 9-30 20-30s20 14 20 30v6H30z" fill="rgba(255,212,90,.22)" stroke="rgba(255,255,255,.28)"/>
+    <rect x="28" y="66" width="44" height="10" rx="6" fill="rgba(255,59,79,.15)" stroke="rgba(255,255,255,.18)"/>
+    <circle cx="50" cy="76" r="4" fill="rgba(255,59,79,.35)"/>
+  </svg>
+
+  <svg class="sticker" style="right:14%; bottom:7%; width:120px; height:120px; animation-delay:-4s" viewBox="0 0 120 120" aria-hidden="true">
+    <circle cx="60" cy="60" r="42" fill="rgba(53,182,255,.20)" stroke="rgba(255,255,255,.28)"/>
+    <path d="M35 55c3 22 13 32 25 32s22-10 25-32" fill="rgba(0,0,0,.08)" stroke="rgba(255,255,255,.20)" stroke-width="2"/>
+  </svg>
+
+  <canvas id="sparkles"></canvas>
+  <canvas id="confetti"></canvas>
+
+  <div class="wrap">
+    <div class="layout">
+
+      <!-- MAIN -->
+      <section class="card">
+        <div class="shine"></div>
+        <div class="main">
+          <div class="badge"><span class="dot"></span> Cute Gadget Vibe Surprise</div>
+
+          <h1>For <span class="grad">Manpreet</span> 💙</h1>
+          <p class="sub">
+            A cute little corner of the internet made for you — with fun gadget vibes ✨
+            Countdown to <strong>4th January</strong> (IST).
+          </p>
+
+          <div class="countdown" aria-label="countdown timer">
+            <div class="box"><p class="num" id="d">--</p><p class="lbl">Days</p></div>
+            <div class="box"><p class="num" id="h">--</p><p class="lbl">Hours</p></div>
+            <div class="box"><p class="num" id="m">--</p><p class="lbl">Minutes</p></div>
+            <div class="box"><p class="num" id="s">--</p><p class="lbl">Seconds</p></div>
+          </div>
+
+          <div class="row">
+            <div class="pill">🎀 <span id="statusText">Counting down…</span></div>
+            <div class="pill btn" id="openLetterBtn">💌 Open the letter</div>
+            <div class="pill">✨ Tap anywhere for sparkles</div>
+          </div>
+
+          <div class="tinyHint">Tip: On phone, tap the screen a few times — it’s cute 😄</div>
+        </div>
+      </section>
+
+      <!-- SIDE -->
+      <aside class="card side">
+        <h2>Gadgets & Love 💙</h2>
+        <p>
+          If love had gadgets… I’d use them only for one thing:
+          to make you smile a little more.
+        </p>
+
+        <div class="gadgets">
+          <div class="gadget">
+            <div class="gicon">🚪</div>
+            <div class="gtext">
+              <div class="t">Anywhere Door</div>
+              <div class="d">So I can reach you</div>
+            </div>
+          </div>
+          <div class="gadget">
+            <div class="gicon">⏳</div>
+            <div class="gtext">
+              <div class="t">Time Machine</div>
+              <div class="d">To relive our moments</div>
+            </div>
+          </div>
+          <div class="gadget">
+            <div class="gicon">🔔</div>
+            <div class="gtext">
+              <div class="t">Lucky Bell</div>
+              <div class="d">For your dreams</div>
+            </div>
+          </div>
+          <div class="gadget">
+            <div class="gicon">🎒</div>
+            <div class="gtext">
+              <div class="t">Magic Pocket</div>
+              <div class="d">Full of surprises</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="envWrap">
+          <div class="envelope" id="envelope" role="button" aria-label="Open letter">
+            <div class="envBody"></div>
+            <div class="envLeft"></div>
+            <div class="envRight"></div>
+            <div class="envTop"></div>
+            <div class="seal">M</div>
+          </div>
+        </div>
+        <div class="hint">Tap the envelope 💌</div>
+
+        <div class="row" style="justify-content:center">
+          <div class="pill">🧸 Cute • Clean • Professional</div>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+
+  <!-- MODAL LETTER -->
+  <div class="modal" id="modal" aria-hidden="true">
+    <div class="letter" role="dialog" aria-modal="true" aria-label="Letter">
+      <div class="letterHead">
+        <strong>To Manpreet 💙</strong>
+        <button class="close" id="closeModal">Close</button>
+      </div>
+
+      <div class="letterBody">
+        <h3 class="letterTitle">A note from my heart…</h3>
+
+        <div class="paper" id="letterText"></div>
+
+        <div class="footer">
+          <span>Made by Love</span>
+          <span id="todayLine"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // =============================
+    // CONFIG
+    // =============================
+    // ✅ Birthday: 4th January at 00:00 IST
+    const BIRTHDAY_IST = "2026-01-04T00:00:00+05:30";
+    const name = "Manpreet";
+    const fromName = "Love";
+    const metDate = "24 September 2025";
+
+    // =============================
+    // LETTER (typewriter reveal)
+    // =============================
+    const fullLetter = [
+      `Dear ${name},`,
+      ``,
+      `If I had a magic pocket like those cute gadgets…`,
+      `I’d pull out one thing again and again: a reason for you to smile.`,
+      ``,
+      `You came into my life like a light — warm, calm, and real.`,
+      `From the day we met on ${metDate}, I felt something different:`,
+      `not a temporary feeling… but a future.`,
+      ``,
+      `I want to say it clearly, with full sincerity:`,
+      `I see you as my wife — the woman I will choose every day.`,
+      ``,
+      `Please be that woman…`,
+      `the one who believes in herself even when she overthinks.`,
+      `the one who stays kind, but also becomes stronger with time.`,
+      `the one who never feels alone, because I’m always here.`,
+      ``,
+      `I will support you always.`,
+      `In your studies, your dreams, your career, your fears — everything.`,
+      `When you’re strong, I’ll be proud.`,
+      `When you’re tired, I’ll be your peace.`,
+      ``,
+      `Happy Birthday, my ${name}. 💙`,
+      `And Happy New Year too.`,
+      `This is only the beginning of us — and I’m ready for all of it.`,
+      ``,
+      `— ${fromName}`
+    ].join("\n");
+
+    // =============================
+    // Countdown
+    // =============================
+    const birthdayDate = new Date(BIRTHDAY_IST);
+    const elD = document.getElementById("d");
+    const elH = document.getElementById("h");
+    const elM = document.getElementById("m");
+    const elS = document.getElementById("s");
+    const statusText = document.getElementById("statusText");
+
+    document.getElementById("todayLine").textContent =
+      `Today: ${new Date().toLocaleDateString(undefined, {year:"numeric", month:"long", day:"numeric"})}`;
+
+    function pad2(n){ return String(n).padStart(2, "0"); }
+
+    let confettiBirthdayDone = false;
+
+    function tick(){
+      const now = new Date();
+      const diff = birthdayDate - now;
+
+      if (diff <= 0){
+        elD.textContent = "00";
+        elH.textContent = "00";
+        elM.textContent = "00";
+        elS.textContent = "00";
+        statusText.textContent = `Happy Birthday ${name}! 🎉💙`;
+
+        if (!confettiBirthdayDone){
+          confettiBirthdayDone = true;
+          burstConfetti(260);
+        }
+        return;
+      }
+
+      const totalSeconds = Math.floor(diff / 1000);
+      const days = Math.floor(totalSeconds / 86400);
+      const hours = Math.floor((totalSeconds % 86400) / 3600);
+      const minutes = Math.floor((totalSeconds % 3600) / 60);
+      const seconds = totalSeconds % 60;
+
+      elD.textContent = pad2(days);
+      elH.textContent = pad2(hours);
+      elM.textContent = pad2(minutes);
+      elS.textContent = pad2(seconds);
+    }
+    tick();
+    setInterval(tick, 1000);
+
+    // =============================
+    // Modal + Envelope
+    // =============================
+    const envelope = document.getElementById("envelope");
+    const openLetterBtn = document.getElementById("openLetterBtn");
+    const modal = document.getElementById("modal");
+    const closeModal = document.getElementById("closeModal");
+    const letterText = document.getElementById("letterText");
+
+    let typedOnce = false;
+
+    function typeLetter(){
+      if (typedOnce) return;
+      typedOnce = true;
+
+      let i = 0;
+      const speed = 10; // type speed
+      const timer = setInterval(()=>{
+        letterText.textContent = fullLetter.slice(0, i);
+        i++;
+        // keep it scrolled to bottom while typing
+        letterText.scrollTop = letterText.scrollHeight;
+        if(i > fullLetter.length){
+          clearInterval(timer);
+        }
+      }, speed);
+    }
+
+    function openLetter(){
+      envelope.classList.add("open");
+      modal.classList.add("open");
+      modal.setAttribute("aria-hidden", "false");
+      burstConfetti(180); // cute pop on open
+      typeLetter();
+    }
+
+    function closeLetter(){
+      modal.classList.remove("open");
+      modal.setAttribute("aria-hidden", "true");
+    }
+
+    envelope.addEventListener("click", openLetter);
+    openLetterBtn.addEventListener("click", openLetter);
+    closeModal.addEventListener("click", closeLetter);
+    modal.addEventListener("click", (e)=>{ if(e.target === modal) closeLetter(); });
+
+    // =============================
+    // Confetti
+    // =============================
+    const conf = document.getElementById("confetti");
+    const ctxC = conf.getContext("2d");
+    let CW, CH, pieces = [], confAnim;
+
+    function resizeConf(){
+      CW = conf.width = window.innerWidth * devicePixelRatio;
+      CH = conf.height = window.innerHeight * devicePixelRatio;
+      conf.style.width = window.innerWidth + "px";
+      conf.style.height = window.innerHeight + "px";
+    }
+    window.addEventListener("resize", ()=>{ resizeConf(); resizeSpark(); });
+    resizeConf();
+
+    function rand(min, max){ return Math.random()*(max-min)+min; }
+
+    function burstConfetti(amount){
+      const colors = ["#35b6ff","#ffd45a","#ff3b4f","#ff6bd6","#4fffd6","#ffffff"];
+      pieces = Array.from({length: amount}, () => ({
+        x: rand(0, CW),
+        y: rand(-CH*0.15, CH*0.2),
+        vx: rand(-2.6, 2.6) * devicePixelRatio,
+        vy: rand(1.2, 5.8) * devicePixelRatio,
+        size: rand(3, 7) * devicePixelRatio,
+        rot: rand(0, Math.PI*2),
+        vr: rand(-0.18, 0.18),
+        color: colors[Math.floor(Math.random()*colors.length)],
+        life: rand(120, 240)
+      }));
+
+      cancelAnimationFrame(confAnim);
+      animateConfetti();
+    }
+
+    function animateConfetti(){
+      ctxC.clearRect(0,0,CW,CH);
+
+      for (const p of pieces){
+        p.x += p.vx;
+        p.y += p.vy;
+        p.rot += p.vr;
+        p.vy += 0.02 * devicePixelRatio;
+        p.life -= 1;
+
+        ctxC.save();
+        ctxC.translate(p.x, p.y);
+        ctxC.rotate(p.rot);
+        ctxC.fillStyle = p.color;
+        ctxC.globalAlpha = Math.max(0, Math.min(1, p.life / 240));
+        ctxC.fillRect(-p.size/2, -p.size/2, p.size, p.size*1.2);
+        ctxC.restore();
+      }
+
+      pieces = pieces.filter(p => p.life > 0 && p.y < CH + 60);
+      if (pieces.length > 0){
+        confAnim = requestAnimationFrame(animateConfetti);
+      } else {
+        ctxC.clearRect(0,0,CW,CH);
+      }
+    }
+
+    // =============================
+    // Sparkle trail (mouse + touch)
+    // =============================
+    const spark = document.getElementById("sparkles");
+    const ctxS = spark.getContext("2d");
+    let SW, SH, stars = [], sparkAnim;
+
+    function resizeSpark(){
+      SW = spark.width = window.innerWidth * devicePixelRatio;
+      SH = spark.height = window.innerHeight * devicePixelRatio;
+      spark.style.width = window.innerWidth + "px";
+      spark.style.height = window.innerHeight + "px";
+    }
+    resizeSpark();
+
+    function addSparkle(x, y){
+      const colors = ["#35b6ff","#ffd45a","#ff6bd6","#ffffff","#4fffd6"];
+      stars.push({
+        x: x*devicePixelRatio,
+        y: y*devicePixelRatio,
+        r: rand(2.5, 5.5) * devicePixelRatio,
+        a: 1,
+        vx: rand(-0.7, 0.7) * devicePixelRatio,
+        vy: rand(-1.2, -0.2) * devicePixelRatio,
+        color: colors[Math.floor(Math.random()*colors.length)],
+        life: rand(26, 46)
+      });
+    }
+
+    function sparkleBurst(x, y){
+      for(let i=0;i<18;i++) addSparkle(x + rand(-12,12), y + rand(-12,12));
+    }
+
+    function animateSparkles(){
+      ctxS.clearRect(0,0,SW,SH);
+
+      for(const st of stars){
+        st.x += st.vx;
+        st.y += st.vy;
+        st.vy += 0.03 * devicePixelRatio; // gravity
+        st.life -= 1;
+        st.a = Math.max(0, st.life / 46);
+
+        // draw star-ish shape
+        ctxS.save();
+        ctxS.globalAlpha = st.a;
+        ctxS.fillStyle = st.color;
+        ctxS.beginPath();
+        ctxS.arc(st.x, st.y, st.r, 0, Math.PI*2);
+        ctxS.fill();
+        ctxS.restore();
+      }
+
+      stars = stars.filter(s => s.life > 0);
+      sparkAnim = requestAnimationFrame(animateSparkles);
+    }
+    animateSparkles();
+
+    // Mouse move sparkle (desktop)
+    let lastMove = 0;
+    window.addEventListener("mousemove", (e)=>{
+      const now = performance.now();
+      if(now - lastMove > 18){
+        addSparkle(e.clientX, e.clientY);
+        lastMove = now;
+      }
+    });
+
+    // Touch sparkle (mobile)
+    window.addEventListener("touchstart", (e)=>{
+      const t = e.touches[0];
+      if(t) sparkleBurst(t.clientX, t.clientY);
+    }, {passive:true});
+
+    window.addEventListener("touchmove", (e)=>{
+      const t = e.touches[0];
+      if(t) addSparkle(t.clientX, t.clientY);
+    }, {passive:true});
+
+    // Click sparkle
+    window.addEventListener("click", (e)=>{
+      sparkleBurst(e.clientX, e.clientY);
+    });
+  </script>
+</body>
+</html>
